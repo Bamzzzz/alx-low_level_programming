@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 /**
- * _strncmp - compare two strings
- * @s1: the first string
- * @s2: the second string
- * @n: the max number of bytes to compare
- * Return: 0 if the first n bytes of s1 and s2 are equal, otherwise non-zero
+ * _strncmp - two strings to be compared
+ * @s1: first string in character
+ * @s2: the second string in character
+ * @n: total numbers to compare in character
+ * Return: 0 if s1 and s2 are equal
  */
 int _strncmp(const char *s1, const char *s2, size_t n)
 {
@@ -29,8 +29,8 @@ return (0);
 }
 
 /**
- * _close - close a file descriptor and print an error message upon failure
- * @fd: the file descriptor to close
+ * _close - close file descriptor and print message error if it fails
+ * @fd: the file descriptor
  */
 void _close(int fd)
 {
@@ -42,10 +42,10 @@ exit(98);
 }
 
 /**
- * _read - read from a file and print an error message upon failure
- * @fd: the file descriptor to read from
- * @buf: the buffer to write to
- * @count: the number of bytes to read
+ * _read - read file and print all error message if it fails
+ * @fd: read the file descriptor
+ * @buf: buffer
+ * @count: the number of bytes to count
  */
 void _read(int fd, char *buf, size_t count)
 {
@@ -105,8 +105,8 @@ return (32);
 }
 
 /**
- * elf_data - print ELF data
- * @buffer: the ELF header
+ * elf_data - print ELF data in character
+ * @buffer: the ELF head
  * Return: 1 if big endian, otherwise 0
  */
 
@@ -147,12 +147,20 @@ printf("\n");
 }
 
 /**
- * elf_osabi - print ELF OS/ABI
+ * elf_osabi - print ELF osabi
  * @buffer: the ELF header
  */
 void elf_osabi(const unsigned char *buffer)
 {
 const char *os_table[19] = {
+"UNIX - Tru64",
+"Novell - Modesto",
+"UNIX - OpenBSD",
+"VMS - OpenVMS",
+"HP - Non-Stop Kernel",
+"AROS",
+"FenixOS",
+"Nuxi CloudABI",
 "UNIX - System V",
 "UNIX - HP-UX",
 "UNIX - NetBSD",
@@ -163,14 +171,6 @@ const char *os_table[19] = {
 "UNIX - AIX",
 "UNIX - IRIX",
 "UNIX - FreeBSD",
-"UNIX - Tru64",
-"Novell - Modesto",
-"UNIX - OpenBSD",
-"VMS - OpenVMS",
-"HP - Non-Stop Kernel",
-"AROS",
-"FenixOS",
-"Nuxi CloudABI",
 "Stratus Technologies OpenVOS"
 };
 
@@ -195,7 +195,7 @@ printf("  %-34s %u\n", "ABI Version:", buffer[EI_ABIVERSION]);
 /**
  * elf_type - print ELF type
  * @buffer: the ELF header
- * @big_endian: endianness (big endian if non-zero)
+ * @big_endian: (big endian if non-zero)
  */
 void elf_type(const unsigned char *buffer, int big_endian)
 {
@@ -265,7 +265,7 @@ printf("\n");
 }
 
 /**
- * main - copy a file's contents to another file
+ * main - copy a file content  to another file
  * @argc: the argument count
  * @argv: the argument values
  * Return: Always 0
