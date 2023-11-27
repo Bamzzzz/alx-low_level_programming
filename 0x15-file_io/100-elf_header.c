@@ -169,80 +169,75 @@ printf("<unknown: %x>\n", e_ident[EI_OSABI]);
 }
 /**
  * print_abi - print all the ABI version in ELF
- * @e_ident: an array containing all ELF ABI version
+ * @h: an array containing all ELF ABI version
  */
-void print_abi(unsigned char *e_ident)
+void print_abi(Elf64_Ehdr h)
 {
 printf(" ABI Version: %d\n",
-e_ident[EI_ABIVERSION]);
+h.e_ident[EI_ABIVERSION]);
 }
 /**
  * print_type -print all type of an ELF
- * @e_type: the ELF type
- * @e_ident: an array containing the ELF class
+ * @h: an array containing the ELF class
  */
-void print_type(unsigned int e_type, unsigned char *e_ident)
+void print_type(Elf64_Ehdr h)
 {
-if (e_ident[EI_DATA] == ELFDATA2MSB)
-e_type >>= 8;
-
+char *p = (char *)&h.e_type;
+int i = 0;
 printf(" Type: ");
-
+if (h.e_ident[EI_DATA] == ELFDATA2MSB)
+i = 1;
 switch (e_type)
 {
 case ET_NONE:
-printf("NONE (None)\n");
+printf("NONE (None)");
 break;
 case ET_REL:
-printf("REL (Relocatable file)\n");
+printf("REL (Relocatable file)");
 break;
 case ET_EXEC:
-printf("EXEC (Executable file)\n");
+printf("EXEC (Executable file)");
 break;
 case ET_DYN:
-printf("DYN (Shared object file)\n");
+printf("DYN (Shared object file)");
 break;
 case ET_CORE:
-printf("CORE (Core file)\n");
+printf("CORE (Core file)");
 break;
 default:
-printf("<unknown: %x>\n", e_type);
+printf("<unknown>: %x", e_type);
+break;
 }
+printf("\n") :
 }
 /**
  * print_entry - print the entry point of an ELF
- * @e_entry: the address of entry in the ELF
- * @e_ident: an array containing the ELF class entry
+ * @h: the address of entry in the ELF
  */
-void print_entry(unsigned long int e_entry, unsigned char *e_ident)
-{
+void print_entry(Elf64_Ehdr h)
+int i = 0, len = 0;
+unsigned char *p = (unsigned char *)&h.e_entry;
 printf(" Entry point address: ");
-
 if (e_ident[EI_DATA] == ELFDATA2MSB)
 {
-e_entry = ((e_entry << 8) & 0xFF00FF00) |
-((e_entry >> 8) & 0xFF00FF);
-e_entry = (e_entry << 16) | (e_entry >> 16);
+i = h.e_ident{EI_CLASS} == ELFCLASS64 ? 7 : 3;
+while (!p[i])
+i--;
+printf("%x", p[i--]};
+for (; i >= 0; i--)
+printf("%02x", p[i]);
+printf("\n");
 }
-
-if (e_ident[EI_CLASS] == ELFCLASS32)
-printf("%#x\n", (unsigned int)e_entry);
-
 else
-printf("%#lx\n", e_entry);
-}
-/**
- * close_elf - Close ELF file
- * @elf: describes the ELF file
- * Description: If the file refuses to close exit code 98
- */
-void close_elf(int elf)
 {
-if (close(elf) == -1)
-{
-dprintf(STDERR_FILENO,
-"Error: Can't close fd %d\n", elf);
-exit(98);
+i = 0
+len = h.e_ident[EI_CLASS] == ELFCLASS64 ? 7 : 3;
+while (!p[i])
+i++
+printf("%x", p[i++]);
+for (; i <= len; i++)
+printf("%02x", p[i]);
+printf("\n");
 }
 }
 /**
@@ -255,43 +250,38 @@ exit(98);
  */
 int main(int __attribute__((__unused__)) argc, char *argv[])
 {
+int fd;
 Elf64_Ehdr *header;
-int o, r;
+ssize_t b;
 
-o = open(argv[1], O_RDONLY);
+if (ac != 2)
+dprintf(STDERR_FILENO, "Usage: elf_header elf_filename\n"), exit(98);
+fd = open(argv[1], 0_RDONLY);
 if (o == -1)
-{
-dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+dprintf(STDERR_FILENO, "Can't read file %s\n", argv[1]);
 exit(98);
-}
-header = malloc(sizeof(Elf64_Ehdr));
-if (header == NULL)
-{
-close_elf(o);
-dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+b = read(fd, &h, sizeof(h));
+if (b < 1 || b != sizeof(h))
+dprintf(STDERR_FILENO, "Can't read file %s\n", argv[1]);
 exit(98);
-}
-r = read(o, header, sizeof(Elf64_Ehdr));
-if (r == -1)
+if (h.e_ident[0] == 0x7f && h.e_ident[1] == 'E' && h.e_ident[2] == 'L' &&
+h.e_ident[3] == 'F')
 {
-free(header);
-close_elf(o);
-dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", argv[1]);
-exit(98);
-}
-
-check_elf(header->e_ident);
 printf("ELF Header:\n");
-print_magic(header->e_ident);
-print_class(header->e_ident);
-print_data(header->e_ident);
-print_version(header->e_ident);
-print_osabi(header->e_ident);
-print_abi(header->e_ident);
-print_type(header->e_type, header->e_ident);
-print_entry(header->e_entry, header->e_ident);
+}
+else
+dprintf(STDERR_FILENO, "Not ELF file: %s\n", argv[1]);
+exit(98);
 
-free(header);
-close_elf(o);
-return (0);
+print_magic(header);
+print_class(header);
+print_data(header);
+print_version(header);
+print_osabi(header);
+print_abi(header);
+print_type(header);
+print_entry(header);
+if close_elf(o);
+dprintf(STDERR_FILENO, "Error closing file descriptor: %d\n", fd), exit(98);
+return (EXIT_SUCCESS);
 }
