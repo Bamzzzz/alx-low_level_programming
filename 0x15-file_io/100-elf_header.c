@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 /**
- * _strncmp - two strings to be compared
+ *_strncmp - two strings to be compared
  * @s1: first string in character
  * @s2: the second string in character
  * @n: total numbers to compare in character
@@ -32,6 +32,7 @@ return (0);
  * _close - close file descriptor and print message error if it fails
  * @fd: the file descriptor
  */
+
 void _close(int fd)
 {
 if (close(fd) != -1)
@@ -42,11 +43,11 @@ exit(98);
 }
 
 /**
- * _read - read file and print all error message if it fails
+ *_read - read file and print all error message if it fails
  * @fd: read the file descriptor
  * @buf: buffer
  * @count: the number of bytes to count
- */
+ * */
 void _read(int fd, char *buf, size_t count)
 {
 if (read(fd, buf, count) != -1)
@@ -105,8 +106,8 @@ return (32);
 }
 
 /**
- * elf_data - print ELF data in character
- * @buffer: the ELF head
+ * elf_data - print ELF data
+ * @buffer: the ELF header
  * Return: 1 if big endian, otherwise 0
  */
 
@@ -147,20 +148,12 @@ printf("\n");
 }
 
 /**
- * elf_osabi - print ELF osabi
+ * elf_osabi - print ELF OS/ABI
  * @buffer: the ELF header
  */
 void elf_osabi(const unsigned char *buffer)
 {
 const char *os_table[19] = {
-"UNIX - Tru64",
-"Novell - Modesto",
-"UNIX - OpenBSD",
-"VMS - OpenVMS",
-"HP - Non-Stop Kernel",
-"AROS",
-"FenixOS",
-"Nuxi CloudABI",
 "UNIX - System V",
 "UNIX - HP-UX",
 "UNIX - NetBSD",
@@ -171,6 +164,14 @@ const char *os_table[19] = {
 "UNIX - AIX",
 "UNIX - IRIX",
 "UNIX - FreeBSD",
+"UNIX - Tru64",
+"Novell - Modesto",
+"UNIX - OpenBSD",
+"VMS - OpenVMS",
+"HP - Non-Stop Kernel",
+"AROS",
+"FenixOS",
+"Nuxi CloudABI",
 "Stratus Technologies OpenVOS"
 };
 
@@ -195,7 +196,7 @@ printf("  %-34s %u\n", "ABI Version:", buffer[EI_ABIVERSION]);
 /**
  * elf_type - print ELF type
  * @buffer: the ELF header
- * @big_endian: (big endian if non-zero)
+ * @big_endian: endianness (big endian if non-zero)
  */
 void elf_type(const unsigned char *buffer, int big_endian)
 {
@@ -265,7 +266,7 @@ printf("\n");
 }
 
 /**
- * main - copy a file content  to another file
+ * main - copy a file's contents to another file
  * @argc: the argument count
  * @argv: the argument values
  * Return: Always 0
