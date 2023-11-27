@@ -47,7 +47,7 @@ exit(98);
  * @fd: read the file descriptor
  * @buf: buffer
  * @count: the number of bytes to count
- * */
+ */
 void _read(int fd, char *buf, size_t count)
 {
 if (read(fd, buf, count) != -1)
