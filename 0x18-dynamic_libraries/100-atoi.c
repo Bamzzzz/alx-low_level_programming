@@ -1,9 +1,12 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
-int _atoi(char *s)
+
+/**
+ * _atoi - the firt whole int number in a string.
+ * @s: string to convert to int
+ *
+ * Return: INT .
+ */
+int _atoi(char *s __attribute__((unused)))
 {
-return atoi(s);
+	return (0);
 }
