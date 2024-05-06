@@ -1,4 +1,4 @@
 0x1E. C - Search Algorithms
-C
+C++
 Algorithm
 Weight: 1
